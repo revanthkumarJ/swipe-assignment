@@ -43,8 +43,8 @@ import androidx.compose.ui.unit.dp
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SwipeScaffold(
-    onNavigateBack: () -> Unit,
-    topBarTitle: String,
+    onNavigateBack: () -> Unit ={},
+    topBarTitle: String ="",
     modifier: Modifier = Modifier,
     @DrawableRes brandIcon: Int? = null,
     bottomBar: @Composable () -> Unit = {},
@@ -57,12 +57,14 @@ fun SwipeScaffold(
 ) {
     Scaffold(
         topBar = {
-            SwipeRoundedTopAppBar(
-                brandIcon = brandIcon,
-                title = topBarTitle,
-                onNavigateBack = onNavigateBack,
-                actions = actions,
-            )
+            if(topBarTitle.isNotEmpty()){
+                SwipeRoundedTopAppBar(
+                    brandIcon = brandIcon,
+                    title = topBarTitle,
+                    onNavigateBack = onNavigateBack,
+                    actions = actions,
+                )
+            }
         },
         floatingActionButton = {
             floatingActionButtonContent?.let { content ->
