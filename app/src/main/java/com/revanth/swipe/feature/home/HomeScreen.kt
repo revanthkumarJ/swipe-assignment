@@ -3,6 +3,7 @@ package com.revanth.swipe.feature.home
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -33,7 +34,9 @@ import com.revanth.swipe.core.ui.components.SwipeScaffold
 import kotlinx.coroutines.flow.collectLatest
 import org.koin.androidx.compose.koinViewModel
 import com.revanth.swipe.R
+import com.revanth.swipe.core.ui.components.SwipeLoader
 import com.revanth.swipe.core.ui.components.SwipeLottieAnimation
+import com.revanth.swipe.feature.home.components.AddProductBottomSheet
 import com.revanth.swipe.feature.home.components.EmptyContent
 import com.revanth.swipe.feature.home.components.ProductCard
 
@@ -66,6 +69,11 @@ fun HomeScreen(
         state = state,
         onAction = viewModel::onAction
     )
+
+    AddProductBottomSheet(
+        state = state,
+        onAction = viewModel::onAction
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -79,7 +87,13 @@ fun HomeScreenContent(
     SwipeScaffold(
         topBarTitle = "Swipe",
         showNavigationIcon = false,
-//        brandIcon = R.drawable.swipe,
+        brandIcon = if (
+            isSystemInDarkTheme()
+        ) {
+            null
+        } else {
+            R.drawable.swipe
+        },
         actions = {
             IconButton(onClick = { onAction(HomeAction.OnAddProductClicked) }) {
                 Icon(Icons.Default.Add, contentDescription = "Add Product")
@@ -96,7 +110,7 @@ fun HomeScreenContent(
         PullToRefreshBox(
             state = pullState,
             isRefreshing = state.showPullToRefreshLoader,
-            onRefresh = {onAction(HomeAction.RefreshProducts) }
+            onRefresh = { onAction(HomeAction.RefreshProducts) }
         ) {
 
             Column(modifier = Modifier.fillMaxSize()) {
@@ -119,7 +133,7 @@ fun HomeScreenContent(
                 ) {
                     when (val home = state.homeState) {
 
-                        is HomeUiState.HomeState.Loading -> LoadingShimmer()
+                        is HomeUiState.HomeState.Loading -> SwipeLoader(Modifier.fillMaxSize(),250.dp)
 
                         is HomeUiState.HomeState.Empty -> EmptyContent(text = "No Products Available")
 
@@ -141,7 +155,7 @@ fun HomeScreenContent(
 fun HomeScreenDialogs(
     dialogState: HomeUiState.DialogState,
     onAction: (HomeAction) -> Unit
-){
+) {
 
     if (dialogState is HomeUiState.DialogState.Show) {
         val message = dialogState.message
@@ -176,12 +190,3 @@ fun ProductList(products: List<Product>) {
     }
 }
 
-@Composable
-fun LoadingShimmer() {
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        CircularProgressIndicator()
-    }
-}
