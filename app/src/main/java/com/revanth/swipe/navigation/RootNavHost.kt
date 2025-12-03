@@ -11,6 +11,8 @@ import com.revanth.swipe.feature.home.homeDestination
 import com.revanth.swipe.feature.home.navigateToHome
 import com.revanth.swipe.feature.onboarding.OnBoardingRoute
 import com.revanth.swipe.feature.onboarding.onBoardingDestination
+import com.revanth.swipe.feature.settings.settings.navigateToSettingsRoute
+import com.revanth.swipe.feature.settings.settings.settingsDestination
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -36,11 +38,13 @@ fun RootNavScreen(
         splashDestination()
 
         homeDestination(
-            navigateToSettings = {}
+            navigateToSettings = navController::navigateToSettingsRoute
         )
 
         onBoardingDestination(
             onboardingComplete = navController::navigateToHome
         )
+
+        settingsDestination(navController)
     }
 }

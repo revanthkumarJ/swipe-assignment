@@ -34,8 +34,6 @@ fun SplashScreen(
         Box(
             modifier = modifier.fillMaxSize(),
             contentAlignment = Alignment.Center,
-        ) {
-            Text("Hello")
-        }
+        ) {}
     }
 }
