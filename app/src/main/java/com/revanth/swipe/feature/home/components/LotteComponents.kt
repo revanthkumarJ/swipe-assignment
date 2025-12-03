@@ -86,3 +86,28 @@ fun FailureComponent(
 
     }
 }
+
+@Composable
+fun NoInternetComponent(
+    text: String,
+    size: Dp= 200.dp,
+    modifier: Modifier
+) {
+    Box(
+        modifier = modifier,
+        contentAlignment = Alignment.Center
+    ) {
+        Column(
+            modifier=Modifier.fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            SwipeLottieAnimation(
+                raw = R.raw.no_internet,
+                size = size
+            )
+            Text(text)
+        }
+
+    }
+}

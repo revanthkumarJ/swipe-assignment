@@ -1,8 +1,10 @@
 package com.revanth.swipe.feature.home
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.revanth.swipe.core.common.DataState
+import com.revanth.swipe.core.data.repos.ConnectivityRepository
 import com.revanth.swipe.core.data.repos.ProductRepository
 import com.revanth.swipe.core.models.Product
 import kotlinx.coroutines.delay
@@ -13,7 +15,8 @@ import okhttp3.RequestBody.Companion.toRequestBody
 
 
 class HomeViewModel(
-    private val repo: ProductRepository
+    private val repo: ProductRepository,
+    val networkStatus: ConnectivityRepository
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(HomeUiState())
@@ -24,6 +27,7 @@ class HomeViewModel(
 
     init {
         loadProducts()
+        observeNetwork()
     }
 
     fun onAction(action: HomeAction) {
@@ -153,6 +157,16 @@ class HomeViewModel(
         }
     }
 
+    private fun observeNetwork(){
+        viewModelScope.launch {
+            networkStatus.isConnected.collect {
+                _state.update {
+                    it.copy(networkAvailable = it.networkAvailable)
+                }
+            }
+        }
+    }
+
     private fun verifyAddTextFields() {
         val currentState = state.value
 
@@ -186,7 +200,31 @@ class HomeViewModel(
         )}
 
         if(productTypeError==null && productNameError==null && priceError==null && taxError==null){
-            addProduct()
+            if(state.value.networkAvailable){
+                addProduct()
+            }
+            else{
+                viewModelScope.launch {
+                    _state.update {
+                        it.copy(addProductState = HomeUiState.AddProductState.NoInternet)
+                    }
+                    delay(3000)
+                    _state.update {
+                        it.copy(
+                            showAddBottomSheet = false,
+                            productType = "",
+                            productName = "",
+                            price = "",
+                            tax = "",
+                            productTypeError = null,
+                            productNameError = null,
+                            priceError = null,
+                            taxError = null
+                        )
+                    }
+                }
+            }
+
         }
     }
 
@@ -308,6 +346,7 @@ data class HomeUiState(
     val searchQuery: String = "",
     val showPullToRefreshLoader: Boolean = false,
     val showAddBottomSheet: Boolean = false,
+    val networkAvailable:Boolean = false,
 
     //Fields for Add Product
     val productType :String="",

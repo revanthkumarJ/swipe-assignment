@@ -113,7 +113,10 @@ fun AddProductBottomSheet(
                     )
                 }
                 HomeUiState.AddProductState.NoInternet -> {
-                    Text("No Internet , so it is added to sync later")
+                    NoInternetComponent(
+                        text = "No Internet Available, Product Added to Local Will be synced once network is available",
+                        modifier = Modifier.fillMaxWidth().fillMaxHeight(0.5f)
+                    )
                 }
                 HomeUiState.AddProductState.Success -> {
                     SuccessComponent(
