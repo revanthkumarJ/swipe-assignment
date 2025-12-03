@@ -1,6 +1,7 @@
 package com.revanth.swipe.navigation.di
 
 import com.revanth.swipe.core.data.di.DataModule
+import com.revanth.swipe.core.database.di.RoomModule
 import com.revanth.swipe.core.network.NetworkModule
 import com.revanth.swipe.feature.home.HomeModule
 import com.revanth.swipe.navigation.RootModule
@@ -15,7 +16,8 @@ object KoinModules {
     val CoreModules = module{
         includes(
             NetworkModule,
-            DataModule
+            DataModule,
+            RoomModule
         )
     }
 

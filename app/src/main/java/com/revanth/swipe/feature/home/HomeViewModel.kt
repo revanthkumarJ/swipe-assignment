@@ -5,7 +5,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.revanth.swipe.core.common.DataState
 import com.revanth.swipe.core.data.repos.ConnectivityRepository
+import com.revanth.swipe.core.data.repos.ProductLocalRepository
 import com.revanth.swipe.core.data.repos.ProductRepository
+import com.revanth.swipe.core.database.enitities.UnsyncedProductEntity
+import com.revanth.swipe.core.database.mappers.toProduct
+import com.revanth.swipe.core.database.mappers.toProductEntity
 import com.revanth.swipe.core.models.Product
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
@@ -16,7 +20,8 @@ import okhttp3.RequestBody.Companion.toRequestBody
 
 class HomeViewModel(
     private val repo: ProductRepository,
-    val networkStatus: ConnectivityRepository
+    val networkStatus: ConnectivityRepository,
+    val localRepo: ProductLocalRepository
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(HomeUiState())
@@ -29,6 +34,9 @@ class HomeViewModel(
         loadProducts()
         observeNetwork()
     }
+
+    val unsyncedProducts = localRepo.getAllUnsyncedProductsFlow()
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
 
     fun onAction(action: HomeAction) {
         when (action) {
@@ -44,7 +52,7 @@ class HomeViewModel(
             }
 
             HomeAction.OnFilterClicked -> {
-                sendEvent(HomeEvent.OpenFilterDrawer)
+
             }
 
             HomeAction.OnAddProductClicked -> {
@@ -55,7 +63,9 @@ class HomeViewModel(
             }
 
             HomeAction.OnSyncClicked -> {
-                sendEvent(HomeEvent.NavigateToSyncScreen)
+                _state.update {
+                    it.copy(showSyncBottomSheet = true)
+                }
             }
 
             HomeAction.HideDialog -> {
@@ -108,6 +118,12 @@ class HomeViewModel(
                     it.copy(addProductState = HomeUiState.AddProductState.Initial)
                 }
             }
+
+            HomeAction.DismissSyncBottomSheet -> {
+                _state.update {
+                    it.copy(showSyncBottomSheet = false)
+                }
+            }
         }
     }
 
@@ -122,6 +138,7 @@ class HomeViewModel(
 
                     is DataState.Success -> {
                         val products = dataState.data
+
                         _state.update {
                             it.copy(
                                 homeState = HomeUiState.HomeState.Success(
@@ -131,6 +148,7 @@ class HomeViewModel(
                                 showPullToRefreshLoader = false
                             )
                         }
+                        localRepo.updateProducts(products.map { it.toProductEntity() })
                     }
 
                     is DataState.Empty -> {
@@ -142,16 +160,7 @@ class HomeViewModel(
                         }
                     }
 
-                    is DataState.Error -> {
-                        _state.update {
-                            it.copy(
-                                dialogState = HomeUiState.DialogState.Show(
-                                    dataState.message
-                                ),
-                                showPullToRefreshLoader = false
-                            )
-                        }
-                    }
+                    is DataState.Error -> fetchFromRoom()
                 }
             }
         }
@@ -159,9 +168,12 @@ class HomeViewModel(
 
     private fun observeNetwork(){
         viewModelScope.launch {
-            networkStatus.isConnected.collect {
+            networkStatus.isConnected.collect {connected->
                 _state.update {
-                    it.copy(networkAvailable = it.networkAvailable)
+                    it.copy(networkAvailable = connected)
+                }
+                if(connected){
+                    syncProducts()
                 }
             }
         }
@@ -208,7 +220,15 @@ class HomeViewModel(
                     _state.update {
                         it.copy(addProductState = HomeUiState.AddProductState.NoInternet)
                     }
-                    delay(3000)
+                    localRepo.addUnsyncedProduct(
+                        UnsyncedProductEntity(
+                            productName = state.value.productName,
+                            productType = state.value.productType,
+                            price = state.value.price,
+                            tax = state.value.tax
+                        )
+                    )
+                    delay(2000)
                     _state.update {
                         it.copy(
                             showAddBottomSheet = false,
@@ -274,9 +294,8 @@ class HomeViewModel(
                             image =""
                         )
                         val existingProducts= (state.value.homeState as HomeUiState.HomeState.Success).allProducts
-                        val updatedProducts= existingProducts.toMutableList().apply {
-                            addFirst(newlyAddedProduct)
-                        }
+                        val updatedProducts= mutableListOf(newlyAddedProduct)
+                        updatedProducts.addAll(existingProducts)
                         _state.update {
                             it.copy(
                                 homeState = HomeUiState.HomeState.Success(
@@ -307,6 +326,38 @@ class HomeViewModel(
         }
     }
 
+    private suspend fun fetchFromRoom() {
+        try {
+            val localProducts = localRepo.getAllProductsFlow().first()
+            val mapped = localProducts.map { it.toProduct() }
+
+            if (mapped.isEmpty()) {
+                _state.update {
+                    it.copy(
+                        homeState = HomeUiState.HomeState.Empty,
+                        showPullToRefreshLoader = false
+                    )
+                }
+            } else {
+                _state.update {
+                    it.copy(
+                        homeState = HomeUiState.HomeState.Success(
+                            allProducts = mapped,
+                            filteredProducts = mapped
+                        ),
+                        showPullToRefreshLoader = false
+                    )
+                }
+            }
+        } catch (e: Exception) {
+            _state.update {
+                it.copy(
+                    homeState = HomeUiState.HomeState.Empty,
+                    showPullToRefreshLoader = false
+                )
+            }
+        }
+    }
 
     private fun applyFilters() {
         val stateValue = _state.value.homeState
@@ -330,13 +381,53 @@ class HomeViewModel(
             _eventState.emit(event)
         }
     }
+
+    private fun syncProducts() {
+        viewModelScope.launch {
+
+            if (!state.value.networkAvailable) return@launch
+
+            val unsynced = localRepo.getAllUnsyncedProductsFlow().first()
+
+            unsynced.forEach { item ->
+
+                val productNameBody = item.productName
+                    .toRequestBody("text/plain".toMediaType())
+
+                val productTypeBody = item.productType
+                    .toRequestBody("text/plain".toMediaType())
+
+                val priceBody = item.price
+                    .toRequestBody("text/plain".toMediaType())
+
+                val taxBody = item.tax
+                    .toRequestBody("text/plain".toMediaType())
+
+                when (repo.addProduct(
+                    productName = productNameBody,
+                    productType = productTypeBody,
+                    price = priceBody,
+                    tax = taxBody,
+                    image = null
+                )) {
+
+                    is DataState.Success -> {
+                        localRepo.deleteUnsyncedProduct(item)
+                    }
+
+                    is DataState.Error -> {
+                        return@launch
+                    }
+
+                    else -> {}
+                }
+            }
+        }
+    }
+
 }
 
-sealed interface HomeEvent {
-    data object NavigateToAddProduct : HomeEvent
-    data object NavigateToSyncScreen : HomeEvent
-    data object OpenFilterDrawer : HomeEvent
-}
+sealed interface HomeEvent
 
 data class HomeUiState(
     val dialogState: DialogState = DialogState.None,
@@ -347,6 +438,8 @@ data class HomeUiState(
     val showPullToRefreshLoader: Boolean = false,
     val showAddBottomSheet: Boolean = false,
     val networkAvailable:Boolean = false,
+    val showSyncBottomSheet: Boolean=false,
+
 
     //Fields for Add Product
     val productType :String="",
@@ -412,4 +505,6 @@ sealed interface HomeAction {
     data object OnAddProductSubmitClick: HomeAction
 
     data object AddProductTryAgain: HomeAction
+
+    data object DismissSyncBottomSheet : HomeAction
 }

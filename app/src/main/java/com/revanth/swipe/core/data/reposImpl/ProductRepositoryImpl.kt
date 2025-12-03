@@ -14,7 +14,7 @@ class ProductRepositoryImpl(
     private val api: ApiService
 ) : ProductRepository {
 
-    override suspend fun getProducts(): Flow<DataState<List<Product>>> = flow {
+    override  fun getProducts(): Flow<DataState<List<Product>>> = flow {
         emit(DataState.Loading)
 
         try {

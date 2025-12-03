@@ -1,5 +1,6 @@
 package com.revanth.swipe.feature.home
 
+import android.util.Log
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
@@ -39,24 +40,19 @@ import com.revanth.swipe.core.ui.components.SwipeLottieAnimation
 import com.revanth.swipe.feature.home.components.AddProductBottomSheet
 import com.revanth.swipe.feature.home.components.EmptyContent
 import com.revanth.swipe.feature.home.components.ProductCard
+import com.revanth.swipe.feature.home.components.SyncBottomSheet
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     viewModel: HomeViewModel = koinViewModel(),
-    onNavigateToAddProduct: () -> Unit = {},
-    onNavigateToSync: () -> Unit = {},
-    onOpenFilterDrawer: () -> Unit = {}
 ) {
     val state by viewModel.state.collectAsState()
 
+    val unsyncedList by viewModel.unsyncedProducts.collectAsState()
+
     LaunchedEffect(Unit) {
         viewModel.eventState.collectLatest { event ->
-            when (event) {
-                HomeEvent.NavigateToAddProduct -> onNavigateToAddProduct()
-                HomeEvent.NavigateToSyncScreen -> onNavigateToSync()
-                HomeEvent.OpenFilterDrawer -> onOpenFilterDrawer()
-            }
         }
     }
 
@@ -72,6 +68,13 @@ fun HomeScreen(
 
     AddProductBottomSheet(
         state = state,
+        onAction = viewModel::onAction
+    )
+
+    SyncBottomSheet(
+        networkAvailable = state.networkAvailable,
+        size=unsyncedList.size,
+        showSyncBottomSheet = state.showSyncBottomSheet,
         onAction = viewModel::onAction
     )
 }

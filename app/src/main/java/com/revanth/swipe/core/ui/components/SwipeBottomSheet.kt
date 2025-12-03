@@ -24,7 +24,7 @@ fun SwipeBottomSheet(
     onDismiss: () -> Unit,
     modifier: Modifier = Modifier,
     containerColor: Color = MaterialTheme.colorScheme.onPrimary,
-    contentColor: Color = contentColorFor(containerColor),
+    contentColor: Color = MaterialTheme.colorScheme.onBackground,
     content: @Composable () -> Unit,
 ) {
     val modalSheetState = rememberModalBottomSheetState(

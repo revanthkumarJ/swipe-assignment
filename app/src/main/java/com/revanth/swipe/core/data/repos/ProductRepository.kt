@@ -9,7 +9,7 @@ import okhttp3.RequestBody
 
 interface ProductRepository {
 
-    suspend fun getProducts(): Flow<DataState<List<Product>>>
+     fun getProducts(): Flow<DataState<List<Product>>>
 
     suspend fun addProduct(
         productName: RequestBody,
