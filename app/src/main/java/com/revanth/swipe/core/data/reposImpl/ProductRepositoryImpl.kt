@@ -45,7 +45,7 @@ class ProductRepositoryImpl(
                 productType = productType,
                 price = price,
                 tax = tax,
-                image = image
+                files = image
             )
 
             if (response.success) {

@@ -9,6 +9,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.revanth.swipe.R
 import com.revanth.swipe.core.ui.components.SwipeBottomSheet
@@ -42,7 +43,10 @@ fun SyncBottomSheet(
                 if(size==0){
                     Text(
                         text = "No Items to Sync",
-                        style = MaterialTheme.typography.headlineSmall,
+                        style = MaterialTheme.typography.headlineSmall.copy(
+                            color = MaterialTheme.colorScheme.primary,
+                            fontWeight = FontWeight.Bold
+                        )
                     )
                     SwipeLottieAnimation(
                         raw = R.raw.empty,
@@ -53,7 +57,10 @@ fun SyncBottomSheet(
                     if (!networkAvailable) {
                         Text(
                             text = "No Internet Connection",
-                            style = MaterialTheme.typography.headlineSmall,
+                            style = MaterialTheme.typography.headlineSmall.copy(
+                                color = MaterialTheme.colorScheme.primary,
+                                fontWeight = FontWeight.Bold
+                            )
                         )
                         Text(
                             text = "Sync will start once we get active internet",
@@ -71,7 +78,10 @@ fun SyncBottomSheet(
                     } else {
                         Text(
                             text = "Syncing Files",
-                            style = MaterialTheme.typography.headlineSmall
+                            style = MaterialTheme.typography.headlineSmall.copy(
+                                color = MaterialTheme.colorScheme.primary,
+                                fontWeight = FontWeight.Bold
+                            )
                         )
                         Text(
                             text = "$size files syncing currently",

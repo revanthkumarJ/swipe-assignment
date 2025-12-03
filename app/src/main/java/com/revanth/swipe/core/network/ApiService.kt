@@ -21,6 +21,6 @@ interface ApiService {
         @Part("product_type") productType: RequestBody,
         @Part("price") price: RequestBody,
         @Part("tax") tax: RequestBody,
-        @Part image: MultipartBody.Part? = null
+        @Part files: MultipartBody.Part? = null
     ): AddProductResponse
 }

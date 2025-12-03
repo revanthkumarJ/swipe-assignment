@@ -17,9 +17,10 @@ import com.revanth.swipe.R
 
 @Composable
 fun ProductImage(
+    modifier: Modifier,
     imageUrl: String?,
-    @DrawableRes loadingPlaceholder: Int = R.drawable.ic_launcher_background,
-    @DrawableRes errorPlaceholder: Int = R.drawable.swipe,
+    @DrawableRes loadingPlaceholder: Int = R.drawable.loading,
+    @DrawableRes errorPlaceholder: Int = R.drawable.swipe1,
 ) {
     AsyncImage(
         model = ImageRequest.Builder(LocalContext.current)
@@ -30,9 +31,6 @@ fun ProductImage(
         placeholder = painterResource(loadingPlaceholder),
         error = painterResource(errorPlaceholder),
         contentScale = ContentScale.Crop,
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(150.dp)
-            .clip(RoundedCornerShape(12.dp))
+        modifier = modifier
     )
 }

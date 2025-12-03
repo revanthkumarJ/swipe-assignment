@@ -1,5 +1,8 @@
 package com.revanth.swipe.feature.home
 
+import android.app.Application
+import android.content.Context
+import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -15,10 +18,13 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.toRequestBody
 
 
 class HomeViewModel(
+    private val context: Context,
     private val repo: ProductRepository,
     val networkStatus: ConnectivityRepository,
     val localRepo: ProductLocalRepository
@@ -122,6 +128,14 @@ class HomeViewModel(
             HomeAction.DismissSyncBottomSheet -> {
                 _state.update {
                     it.copy(showSyncBottomSheet = false)
+                }
+            }
+
+            is HomeAction.OnImageSelected -> {
+                _state.update {
+                    it.copy(
+                        selectedImage = action.uri,
+                    )
                 }
             }
         }
@@ -259,13 +273,23 @@ class HomeViewModel(
             val productTypeBody = productType.toRequestBody("text/plain".toMediaType())
             val priceBody = price.toRequestBody("text/plain".toMediaType())
             val taxBody = tax.toRequestBody("text/plain".toMediaType())
+            val imagePart = state.value.selectedImage?.let { uri ->
+                val inputStream = context.contentResolver.openInputStream(uri)
+                val bytes = inputStream?.readBytes()
 
+                val requestFile = bytes?.toRequestBody("image/*".toMediaTypeOrNull())
+                MultipartBody.Part.createFormData(
+                    name = "files",
+                    filename = "product_${System.currentTimeMillis()}.jpg",
+                    body = requestFile!!
+                )
+            }
             val res= repo.addProduct(
                 productName=productNameBody,
                 productType=productTypeBody,
                 price=priceBody,
                 tax=taxBody,
-                image = null
+                image = imagePart
             )
             when(res){
 
@@ -450,6 +474,7 @@ data class HomeUiState(
     val productNameError:String?=null,
     val priceError:String?=null,
     val taxError:String?=null,
+    val selectedImage: Uri? = null,
 ) {
     sealed interface DialogState {
         object None : DialogState
@@ -507,4 +532,6 @@ sealed interface HomeAction {
     data object AddProductTryAgain: HomeAction
 
     data object DismissSyncBottomSheet : HomeAction
+
+    data class OnImageSelected(val uri: Uri?) : HomeAction
 }
