@@ -6,36 +6,30 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
-import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBackIosNew
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FabPosition
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.ScaffoldDefaults
-import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 
@@ -45,6 +39,7 @@ import androidx.compose.ui.unit.dp
 fun SwipeScaffold(
     onNavigateBack: () -> Unit ={},
     topBarTitle: String ="",
+    showNavigationIcon:Boolean=true,
     modifier: Modifier = Modifier,
     @DrawableRes brandIcon: Int? = null,
     bottomBar: @Composable () -> Unit = {},
@@ -57,12 +52,13 @@ fun SwipeScaffold(
 ) {
     Scaffold(
         topBar = {
-            if(topBarTitle.isNotEmpty()){
+            if(topBarTitle.isNotEmpty() || brandIcon!=null){
                 SwipeRoundedTopAppBar(
                     brandIcon = brandIcon,
                     title = topBarTitle,
                     onNavigateBack = onNavigateBack,
                     actions = actions,
+                    showNavigationIcon = showNavigationIcon
                 )
             }
         },
@@ -106,6 +102,7 @@ data class FloatingActionButtonContent(
 fun SwipeRoundedTopAppBar(
     title: String,
     onNavigateBack: () -> Unit,
+    showNavigationIcon:Boolean=true,
     modifier: Modifier = Modifier,
     @DrawableRes brandIcon: Int? = null,
     actions: @Composable RowScope.() -> Unit = {},
@@ -130,11 +127,12 @@ fun SwipeRoundedTopAppBar(
                         painter = painterResource(brandIcon),
                         contentDescription = "Brand Icon",
                         modifier = Modifier
-                            .size(96.dp, 28.dp)
+                            .size(120.dp, 40.dp)
                             .align(Alignment.TopStart),
+                        contentScale = ContentScale.Fit
                     )
                 }
-            } else {
+            } else if(showNavigationIcon) {
                 IconButton(
                     onClick = onNavigateBack,
                 ) {

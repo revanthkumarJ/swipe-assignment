@@ -28,6 +28,7 @@ retrofit2KotlinxSerializationConverter = "1.0.0"
 roomKtx = "2.6.1"
 roomRuntime = "2.6.1"
 ksp = "2.0.20-1.0.24"
+compottie = "2.0.0-rc05"
 
 [libraries]
 androidx-compose-foundation = { module = "androidx.compose.foundation:foundation" }
@@ -70,6 +71,8 @@ logging-interceptor = { module = "com.squareup.okhttp3:logging-interceptor", ver
 okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 retrofit2-kotlinx-serialization-converter = { module = "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter", version.ref = "retrofit2KotlinxSerializationConverter" }
+compottie-lite = { module = "io.github.alexzhirkevich:compottie-lite", version.ref = "compottie" }
+compottie-resources = { module = "io.github.alexzhirkevich:compottie-resources", version.ref = "compottie" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
