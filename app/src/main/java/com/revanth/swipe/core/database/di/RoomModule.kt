@@ -19,4 +19,5 @@ val RoomModule = module {
 
     single { get<AppDatabase>().productDao() }
     single { get<AppDatabase>().unsyncedProductDao() }
+    single { get<AppDatabase>().userDao() }
 }

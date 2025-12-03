@@ -16,6 +16,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.FilterAlt
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Sync
 import androidx.compose.material3.*
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
@@ -47,6 +48,7 @@ import com.revanth.swipe.feature.home.components.SyncBottomSheet
 @Composable
 fun HomeScreen(
     viewModel: HomeViewModel = koinViewModel(),
+    navigateToSettings:()->Unit,
 ) {
     val state by viewModel.state.collectAsState()
 
@@ -54,6 +56,9 @@ fun HomeScreen(
 
     LaunchedEffect(Unit) {
         viewModel.eventState.collectLatest { event ->
+            when(event){
+                is HomeEvent.NavigateToSettings -> navigateToSettings()
+            }
         }
     }
 
@@ -102,11 +107,11 @@ fun HomeScreenContent(
             IconButton(onClick = { onAction(HomeAction.OnAddProductClicked) }) {
                 Icon(Icons.Default.Add, contentDescription = "Add Product")
             }
-            IconButton(onClick = { onAction(HomeAction.OnFilterClicked) }) {
-                Icon(Icons.Default.FilterAlt, contentDescription = "Filter")
-            }
             IconButton(onClick = { onAction(HomeAction.OnSyncClicked) }) {
                 Icon(Icons.Default.Sync, contentDescription = "Sync")
+            }
+            IconButton(onClick = { onAction(HomeAction.OnSettingsClicked) }) {
+                Icon(Icons.Default.Settings, contentDescription = "Settings")
             }
         }
     ) {

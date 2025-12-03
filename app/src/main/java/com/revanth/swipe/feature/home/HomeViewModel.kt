@@ -57,8 +57,10 @@ class HomeViewModel(
                 loadProducts()
             }
 
-            HomeAction.OnFilterClicked -> {
-
+            HomeAction.OnSettingsClicked -> {
+                viewModelScope.launch {
+                    _eventState.emit(HomeEvent.NavigateToSettings)
+                }
             }
 
             HomeAction.OnAddProductClicked -> {
@@ -451,7 +453,9 @@ class HomeViewModel(
 
 }
 
-sealed interface HomeEvent
+sealed interface HomeEvent{
+    data object NavigateToSettings : HomeEvent
+}
 
 data class HomeUiState(
     val dialogState: DialogState = DialogState.None,
@@ -509,7 +513,7 @@ sealed interface HomeAction {
 
     data object RefreshProducts : HomeAction
 
-    data object OnFilterClicked : HomeAction
+    data object OnSettingsClicked : HomeAction
 
     data object OnAddProductClicked : HomeAction
 
