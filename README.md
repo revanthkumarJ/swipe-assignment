@@ -167,3 +167,14 @@ This pattern provides:
 
 Overall, this layered approach ensures a clean separation between UI, business logic, and navigation, making the project robust, maintainable, and scalable.
 
+### 🔹 Developer-Friendly Previews
+
+The project includes **Jetpack Compose Previews** for all major UI components and screens.  
+These previews make it easy for new developers to:
+
+- Quickly understand the UI layout  
+- Modify or update screens without running the app  
+- Visualize light/dark themes
+  
+<img width="600"  alt="image" src="https://github.com/user-attachments/assets/9f39d849-f430-4667-8da5-c4668943d4bf" />
+
