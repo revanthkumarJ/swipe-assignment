@@ -81,7 +81,7 @@ It is built using **Jetpack Compose**, **Koin**, **Retrofit**, **Room**, **Corou
 
 | Settings Screen | Theme Screen | Help & Support | FAQ | About Us | App Info |
 |----------|-----------|-----------|-----------|-----------|-----------|
-| <img width="200"  alt="image" src="https://github.com/user-attachments/assets/2f7f8606-6f8a-4758-90fa-53e095162d1b" /> | <img width="200"  alt="image" src="https://github.com/user-attachments/assets/4a7b195d-00c1-4afc-aa16-4cf5aac559f5" /> | <img width="200"  alt="image" src="https://github.com/user-attachments/assets/fa1742a5-842b-45a5-a196-1e43b61f9906" /> | <img width="200"  alt="image" src="https://github.com/user-attachments/assets/6cb305c3-a5b6-404f-83a2-443da61c30ae" /> | <img width="200"  alt="image" src="https://github.com/user-attachments/assets/afce8277-372e-4df1-8988-ee6d2d2f433f" /> |<img width="200"  alt="image" src="https://github.com/user-attachments/assets/f420e6cc-095a-4bb5-8382-3c96ccfd840c" /> |
+| <img width="200"  alt="image" src="https://github.com/user-attachments/assets/2f7f8606-6f8a-4758-90fa-53e095162d1b" /> | <img width="200"  alt="image" src="https://github.com/user-attachments/assets/4a7b195d-00c1-4afc-aa16-4cf5aac559f5" /> | <img width="200"  alt="image" src="https://github.com/user-attachments/assets/fa1742a5-842b-45a5-a196-1e43b61f9906" /> | <img width="200"  alt="image" src="https://github.com/user-attachments/assets/19be2dbc-d2a8-42c2-9ccf-4df062a2d6a8" /> | <img width="200"  alt="image" src="https://github.com/user-attachments/assets/afce8277-372e-4df1-8988-ee6d2d2f433f" /> |<img width="200"  alt="image" src="https://github.com/user-attachments/assets/f420e6cc-095a-4bb5-8382-3c96ccfd840c" /> |
 
 
 
