@@ -1,6 +1,5 @@
 # **🛒 Android Product Management App**
 Built using **Kotlin** and **Jetpack Compose**  
-Developed in **2 days**  
 Assignment provided by **Swipe@YC**
 
 ## 🎬 App Demo Video
