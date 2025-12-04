@@ -20,41 +20,23 @@ fun AskNotificationPermission() {
     val context = LocalContext.current
     val activity = context as Activity
 
-    var shouldShowPermission by remember { mutableStateOf(true) }
-    var launchRequest by remember { mutableStateOf(false) }
+    val isGranted = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        ActivityCompat.checkSelfPermission(
+            context,
+            Manifest.permission.POST_NOTIFICATIONS
+        ) == android.content.pm.PackageManager.PERMISSION_GRANTED
+    } else true
 
     val launcher = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestPermission()
-    ) { isGranted ->
-        if (!isGranted) {
-            // Check if user blocked ("Don't ask again")
-            val permanentlyDenied = !ActivityCompat.shouldShowRequestPermissionRationale(
-                activity,
-                Manifest.permission.POST_NOTIFICATIONS
-            )
+    ) {}
 
-            if (permanentlyDenied) {
-                Toast.makeText(
-                    context,
-                    "You have blocked notification permission. You won't receive notifications.",
-                    Toast.LENGTH_LONG
-                ).show()
-
-                shouldShowPermission = false // stop asking
-            } else {
-                // user denied normally → ask again
-                launchRequest = true
-            }
-        } else {
-            shouldShowPermission = false // permission granted → stop asking
-        }
-    }
-
-    // Trigger permission dialog
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && shouldShowPermission) {
-        LaunchedEffect(launchRequest) {
+    LaunchedEffect(Unit) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && !isGranted) {
             launcher.launch(Manifest.permission.POST_NOTIFICATIONS)
         }
     }
 }
+
+
 

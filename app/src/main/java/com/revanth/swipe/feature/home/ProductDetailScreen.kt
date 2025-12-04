@@ -67,8 +67,7 @@ fun ProductDetailContent(
                 contentDescription = "Product Image",
                 placeholder = painterResource(R.drawable.loading),
                 error = painterResource(R.drawable.swipe),
-                contentScale = ContentScale.Crop,
-                modifier = modifier
+                modifier = modifier.fillMaxWidth()
             )
         }
 

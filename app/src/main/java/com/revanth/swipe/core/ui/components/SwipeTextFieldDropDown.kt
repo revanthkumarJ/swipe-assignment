@@ -2,12 +2,14 @@ package com.revanth.swipe.core.ui.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MenuAnchorType
 import androidx.compose.material3.OutlinedTextField
@@ -87,18 +89,40 @@ fun SwipeTextFieldDropdown(
         ExposedDropdownMenu(
             expanded = isExpanded,
             onDismissRequest = { isExpanded = false },
+            modifier = Modifier
+                .clip(RoundedCornerShape(12.dp))
         ) {
             options.forEachIndexed { index, item ->
+
                 DropdownMenuItem(
-                    text = { Text(text = item) },
+                    text = {
+                        Text(
+                            text = item,
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
+                    },
                     onClick = {
                         isExpanded = false
                         onOptionSelected(index, item)
                         onValueChanged(item)
                     },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 4.dp, vertical = 4.dp)
+                        .clip(RoundedCornerShape(8.dp))
                 )
+
+                if (index < options.lastIndex) {
+                    HorizontalDivider(
+                        modifier = Modifier
+                            .padding(horizontal = 12.dp),
+                        color = MaterialTheme.colorScheme.outline.copy(alpha = 0.3f)
+                    )
+                }
             }
         }
+
     }
 }
 
