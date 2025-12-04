@@ -88,9 +88,9 @@ Instead, a structured and scalable **three-layer package organization** is follo
 
 ### 📁 Project Structure
 
-core/
-navigation/
-feature/
+
+<img width="300"  alt="image" src="https://github.com/user-attachments/assets/a92c28d1-7cfa-430e-b4ca-233d919a6586" />
+
 
 
 ---
