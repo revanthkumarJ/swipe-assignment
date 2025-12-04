@@ -85,20 +85,32 @@ data class FAQ(
 
 val faqList = listOf(
     FAQ(
-        question = "What is Swipe?",
-        answer = "Swipe is a fast and simple billing and inventory management app designed to help businesses manage sales, customers, and products efficiently."
+        question = "What is this app?",
+        answer = "This app allows users to view products, search for items, add new products, and manage them efficiently using a clean and modern Android interface."
     ),
     FAQ(
         question = "How do I add a new product?",
-        answer = "Go to the Products section, tap the + icon, and enter the product details such as name, price, stock, and description."
+        answer = "Open the Add Product screen, fill in details like name, price, product type, and tax, upload an optional image, and tap Submit to add it to the system."
     ),
     FAQ(
-        question = "Can I generate invoices in Swipe?",
-        answer = "Yes! You can easily create and share invoices with customers directly from the app using the Invoice section."
+        question = "Can I use the app without internet?",
+        answer = "Yes. You can add products offline, and they will be saved locally. When the internet becomes available, the app automatically syncs them with the server."
     ),
     FAQ(
-        question = "Is my data safe on Swipe?",
-        answer = "Yes. Swipe securely stores all your billing and inventory data with cloud backup and encryption to ensure maximum safety."
+        question = "Where are the products coming from?",
+        answer = "Products are fetched from the public Swipe API, and displayed with images, prices, type, and tax information."
+    ),
+    FAQ(
+        question = "How does search work?",
+        answer = "You can search products by name in real-time using the search bar on the product listing screen."
+    ),
+    FAQ(
+        question = "Can I change the theme of the app?",
+        answer = "Yes. You can switch between Light, Dark, or System Default theme from the Settings screen."
+    ),
+    FAQ(
+        question = "What information is available in App Info?",
+        answer = "App Info contains details such as version, build number, developer credits, and necessary license/technology information."
     )
 )
 
