@@ -206,12 +206,12 @@ class HomeViewModel(
     }
 
     fun sendNotification(
-        title: String
+        message: String,
     ) {
         try {
             notificationRepository.sendNotification(
                 title = "New Product Added",
-                message = "$title has been added to your list!"
+                message = message
             )
         }catch (e: Exception){ }
 
@@ -334,7 +334,7 @@ class HomeViewModel(
                     _state.update {
                         it.copy(addProductState = HomeUiState.AddProductState.Success)
                     }
-                    sendNotification(productName)
+                    sendNotification("$productName added to Product Server Succesfully")
                     if (state.value.homeState is HomeUiState.HomeState.Success) {
                         val newlyAddedProduct = Product(
                             productName = productName,
@@ -463,7 +463,7 @@ class HomeViewModel(
                 )) {
 
                     is DataState.Success -> {
-                        sendNotification(item.productName)
+                        sendNotification("${ item.productName } Local item Synced and added to Product Server Succesfully")
                         localRepo.deleteUnsyncedProduct(item)
                     }
 

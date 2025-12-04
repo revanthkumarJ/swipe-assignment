@@ -1,5 +1,6 @@
 package com.revanth.swipe.feature.home
 
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -13,6 +14,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.compose.AsyncImagePainter
@@ -20,6 +22,7 @@ import coil.request.ImageRequest
 import com.revanth.swipe.core.models.Product
 import com.revanth.swipe.core.ui.components.SwipeScaffold
 import com.revanth.swipe.R
+import com.revanth.swipe.core.ui.theme.SwipeTheme
 
 @Composable
 fun ProductDetailScreen(
@@ -113,3 +116,22 @@ fun ProductDetailContent(
         Spacer(Modifier.height(32.dp))
     }
 }
+
+@Preview(showBackground = true, name = "Light Mode")
+@Preview(showBackground = true, uiMode = UI_MODE_NIGHT_YES, name = "Dark Mode")
+@Composable
+fun ProductDetailScreenPreview() {
+    SwipeTheme {
+        ProductDetailScreen(
+            product = Product(
+                productName = "Sample Product",
+                productType = "Product",
+                price = 299.9,
+                tax = 18.9,
+                image = null
+            ),
+            onBackClick = {}
+        )
+    }
+}
+

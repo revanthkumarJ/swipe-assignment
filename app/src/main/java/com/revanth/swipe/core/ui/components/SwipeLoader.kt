@@ -23,11 +23,9 @@ fun SwipeLoader(
         modifier = modifier,
         contentAlignment = Alignment.Center
     ) {
-
-            SwipeLottieAnimation(
-                raw = R.raw.loading,
-                size = size
-            )
-
+        SwipeLottieAnimation(
+            raw = R.raw.loading,
+            size = size
+        )
     }
 }

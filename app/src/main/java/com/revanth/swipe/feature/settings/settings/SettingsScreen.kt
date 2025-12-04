@@ -1,6 +1,7 @@
 package com.revanth.swipe.feature.settings.settings
 
 import android.content.Intent
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.net.Uri
 import android.provider.Settings
 import androidx.compose.foundation.background
@@ -29,9 +30,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.revanth.swipe.core.ui.components.SwipeScaffold
+import com.revanth.swipe.core.ui.theme.SwipeTheme
 
 @Composable
 fun SettingsScreen(
@@ -158,5 +161,17 @@ private fun SettingsScreenCard(
                 modifier = Modifier.size(16.dp),
             )
         }
+    }
+}
+
+@Preview(showBackground = true, name = "Light Mode")
+@Preview(showBackground = true, uiMode = UI_MODE_NIGHT_YES, name = "Dark Mode")
+@Composable
+fun SettingsScreenPreview() {
+    SwipeTheme {
+        SettingsScreen(
+            onNavigateBack = {},
+            navigateToScreen = {}
+        )
     }
 }

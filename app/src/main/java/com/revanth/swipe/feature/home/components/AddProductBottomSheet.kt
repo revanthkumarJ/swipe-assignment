@@ -1,5 +1,6 @@
 package com.revanth.swipe.feature.home.components
 
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
@@ -29,6 +30,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import com.revanth.swipe.core.ui.components.SwipeBottomSheet
@@ -36,6 +38,7 @@ import com.revanth.swipe.core.ui.components.SwipeButton
 import com.revanth.swipe.core.ui.components.SwipeLoader
 import com.revanth.swipe.core.ui.components.SwipeOutlinedTextField
 import com.revanth.swipe.core.ui.components.SwipeTextFieldDropdown
+import com.revanth.swipe.core.ui.theme.SwipeTheme
 import com.revanth.swipe.feature.home.HomeAction
 import com.revanth.swipe.feature.home.HomeUiState
 
@@ -194,9 +197,21 @@ fun AddProductBottomSheet(
                     )
                 }
             }
-
-
         }
     }
+}
 
+
+@Preview(showBackground = true, name = "Light Mode")
+@Preview(showBackground = true, uiMode = UI_MODE_NIGHT_YES, name = "Dark Mode")
+@Composable
+fun AddProductBottomSheetPreview() {
+    SwipeTheme {
+        AddProductBottomSheet(
+            state = HomeUiState(
+                showAddBottomSheet = true
+            ),
+            onAction = {}
+        )
+    }
 }

@@ -1,5 +1,6 @@
 package com.revanth.swipe.feature.home.components
 
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -16,8 +17,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.revanth.swipe.core.models.Product
+import com.revanth.swipe.core.ui.theme.SwipeTheme
+
 @Composable
 fun ProductCard(
     product: Product,
@@ -81,5 +85,22 @@ fun ProductCard(
                 }
             }
         }
+    }
+}
+
+@Preview(showBackground = true, name = "Light Mode")
+@Preview(showBackground = true, uiMode = UI_MODE_NIGHT_YES, name = "Dark Mode")
+@Composable
+fun ProductCardPreview() {
+    SwipeTheme {
+        ProductCard(
+            product = Product(
+                productName = "Sample Product",
+                productType = "Product",
+                price = 299.0,
+                tax = 15.0,
+                image = null
+            )
+        )
     }
 }

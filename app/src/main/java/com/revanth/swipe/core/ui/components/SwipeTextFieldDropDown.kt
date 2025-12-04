@@ -1,5 +1,6 @@
 package com.revanth.swipe.core.ui.components
 
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -126,7 +127,8 @@ fun SwipeTextFieldDropdown(
     }
 }
 
-@Preview
+@Preview(showBackground = true, name = "Light Mode")
+@Preview(showBackground = true, uiMode = UI_MODE_NIGHT_YES, name = "Dark Mode")
 @Composable
 private fun SwipeTextFieldDropdownPreview() {
     val options = listOf("Option 1", "Option 2", "Option 3")

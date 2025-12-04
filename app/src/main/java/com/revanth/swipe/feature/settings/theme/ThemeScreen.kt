@@ -1,5 +1,6 @@
 package com.revanth.swipe.feature.settings.theme
 
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -41,6 +42,9 @@ import org.koin.androidx.compose.koinViewModel
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.RadioButtonColors
 import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.tooling.preview.Preview
+import com.revanth.swipe.core.models.ThemeConfig
+import com.revanth.swipe.core.ui.theme.SwipeTheme
 
 @Composable
 internal fun ChangeThemeScreen(
@@ -211,3 +215,19 @@ fun SwipeRadioButton(
         }
     }
 }
+
+@Preview(showBackground = true, name = "Light Mode")
+@Preview(showBackground = true, uiMode = UI_MODE_NIGHT_YES, name = "Dark Mode")
+@Composable
+fun ChangeThemeScreenPreview() {
+    SwipeTheme {
+        ThemeScreenContent(
+            uiState = ThemeState(
+                currentTheme = ThemeConfig.SYSTEM,
+            ),
+            navigateBack = {},
+            onAction = {}
+        )
+    }
+}
+

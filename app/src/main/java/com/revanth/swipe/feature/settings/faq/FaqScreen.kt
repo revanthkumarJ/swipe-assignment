@@ -1,5 +1,6 @@
 package com.revanth.swipe.feature.settings.faq
 
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,8 +15,10 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.revanth.swipe.core.ui.components.SwipeScaffold
+import com.revanth.swipe.core.ui.theme.SwipeTheme
 
 @Composable
 fun FaqScreen(
@@ -98,3 +101,14 @@ val faqList = listOf(
         answer = "Yes. Swipe securely stores all your billing and inventory data with cloud backup and encryption to ensure maximum safety."
     )
 )
+
+@Preview(showBackground = true, name = "Light Mode")
+@Preview(showBackground = true, uiMode = UI_MODE_NIGHT_YES, name = "Dark Mode")
+@Composable
+fun FaqScreenPreview() {
+    SwipeTheme {
+        FaqScreen(
+            onNavigateBack = {}
+        )
+    }
+}

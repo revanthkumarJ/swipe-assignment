@@ -1,5 +1,6 @@
 package com.revanth.swipe.core.ui.components
 
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.ui.tooling.preview.Preview
 import com.revanth.swipe.core.ui.theme.SwipeTheme
 import androidx.compose.foundation.layout.Column
@@ -77,7 +78,8 @@ fun SwipeOutlinedTextField(
 }
 
 
-@Preview
+@Preview(showBackground = true, name = "Light Mode")
+@Preview(showBackground = true, uiMode = UI_MODE_NIGHT_YES, name = "Dark Mode")
 @Composable
 fun SwipeOutlinedTextFieldPreview() {
     SwipeTheme {

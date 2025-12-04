@@ -1,5 +1,6 @@
 package com.revanth.swipe.feature.home
 
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.util.Log
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -29,6 +30,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
@@ -40,6 +42,7 @@ import com.revanth.swipe.R
 import com.revanth.swipe.core.ui.components.SwipeLoader
 import com.revanth.swipe.core.ui.components.SwipeLottieAnimation
 import com.revanth.swipe.core.ui.components.SwipeScaffold
+import com.revanth.swipe.core.ui.theme.SwipeTheme
 import com.revanth.swipe.feature.home.components.AddProductBottomSheet
 import com.revanth.swipe.feature.home.components.AskNotificationPermission
 import com.revanth.swipe.feature.home.components.EmptyContent
@@ -228,3 +231,27 @@ fun ProductList(
     }
 }
 
+@Preview(showBackground = true, name = "Light Mode")
+@Preview(showBackground = true, uiMode = UI_MODE_NIGHT_YES, name = "Dark Mode")
+@Composable
+fun HomeScreenContentPreview() {
+    SwipeTheme {
+        HomeScreenContent(
+            state = HomeUiState(
+                homeState = HomeUiState.HomeState.Success(
+                    filteredProducts = listOf(
+                        Product(
+                            productName = "Sample Product",
+                            productType = "Product",
+                            price = 299.0,
+                            tax = 18.0,
+                            image = null
+                        )
+                    ),
+                    allProducts = listOf()
+                )
+            ),
+            onAction = {}
+        )
+    }
+}
