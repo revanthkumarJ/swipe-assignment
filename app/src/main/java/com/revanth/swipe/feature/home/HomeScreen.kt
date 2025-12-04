@@ -41,6 +41,7 @@ import com.revanth.swipe.core.ui.components.SwipeLoader
 import com.revanth.swipe.core.ui.components.SwipeLottieAnimation
 import com.revanth.swipe.core.ui.components.SwipeScaffold
 import com.revanth.swipe.feature.home.components.AddProductBottomSheet
+import com.revanth.swipe.feature.home.components.AskNotificationPermission
 import com.revanth.swipe.feature.home.components.EmptyContent
 import com.revanth.swipe.feature.home.components.ProductCard
 import com.revanth.swipe.feature.home.components.SyncBottomSheet
@@ -64,6 +65,8 @@ fun HomeScreen(
             }
         }
     }
+
+    AskNotificationPermission()
 
     HomeScreenDialogs(
         dialogState = state.dialogState,

@@ -7,6 +7,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.revanth.swipe.core.common.DataState
+import com.revanth.swipe.core.common.utils.NotificationRepository
 import com.revanth.swipe.core.data.repos.ConnectivityRepository
 import com.revanth.swipe.core.data.repos.ProductLocalRepository
 import com.revanth.swipe.core.data.repos.ProductRepository
@@ -27,7 +28,8 @@ class HomeViewModel(
     private val context: Context,
     private val repo: ProductRepository,
     val networkStatus: ConnectivityRepository,
-    val localRepo: ProductLocalRepository
+    val localRepo: ProductLocalRepository,
+    private val notificationRepository: NotificationRepository
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(HomeUiState())
@@ -203,6 +205,18 @@ class HomeViewModel(
         }
     }
 
+    fun sendNotification(
+        title: String
+    ) {
+        try {
+            notificationRepository.sendNotification(
+                title = "New Product Added",
+                message = "$title has been added to your list!"
+            )
+        }catch (e: Exception){ }
+
+    }
+
     private fun verifyAddTextFields() {
         val currentState = state.value
 
@@ -320,6 +334,7 @@ class HomeViewModel(
                     _state.update {
                         it.copy(addProductState = HomeUiState.AddProductState.Success)
                     }
+                    sendNotification(productName)
                     if (state.value.homeState is HomeUiState.HomeState.Success) {
                         val newlyAddedProduct = Product(
                             productName = productName,
@@ -448,6 +463,7 @@ class HomeViewModel(
                 )) {
 
                     is DataState.Success -> {
+                        sendNotification(item.productName)
                         localRepo.deleteUnsyncedProduct(item)
                     }
 
