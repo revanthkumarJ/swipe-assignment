@@ -3,6 +3,13 @@ Built using **Kotlin** and **Jetpack Compose**
 Developed in **2 days**  
 Assignment provided by **Swipe@YC**
 
+## 🎬 App Demo Video
+
+You can watch the full demo of the application here:
+
+🔗 **https://drive.google.com/file/d/1cxhq3I64tz_xlA8NrBuWEmRXMIxyeye-/view?usp=sharing**
+
+
 ##  How to Run This Project
 
 1. **Clone the repository**
