@@ -48,8 +48,8 @@ sealed class SettingsItems(
 
 internal val settingsItems: List<SettingsItems> = listOf(
     SettingsItems.ChangeTheme,
-    SettingsItems.AboutUs,
     SettingsItems.Help,
     SettingsItems.FAQ,
+    SettingsItems.AboutUs,
     SettingsItems.AppInfo
 )

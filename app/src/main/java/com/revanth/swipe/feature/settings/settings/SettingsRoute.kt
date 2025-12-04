@@ -5,6 +5,12 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
+import com.revanth.swipe.feature.settings.faq.faqRoute
+import com.revanth.swipe.feature.settings.faq.navigateToFAQ
+import com.revanth.swipe.feature.settings.help.helpDestination
+import com.revanth.swipe.feature.settings.help.navigateToHelp
+import com.revanth.swipe.feature.settings.theme.navigateToTheme
+import com.revanth.swipe.feature.settings.theme.themeDestination
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -24,17 +30,33 @@ fun NavGraphBuilder.settingsDestination(
         startDestination = SettingsRoute,
     ) {
         settingsRoute(
-            navigateBack = { navController.popBackStack() },
+            navigateBack = navController::popBackStack,
             navigateToScreen = { it->
                 when(it){
-                    SettingsItems.AboutUs -> TODO()
-                    SettingsItems.AppInfo -> TODO()
-                    SettingsItems.ChangeTheme -> TODO()
-                    SettingsItems.FAQ -> TODO()
-                    SettingsItems.Help -> TODO()
+                    SettingsItems.ChangeTheme -> {
+                        navController.navigateToTheme()
+                    }
+                    SettingsItems.FAQ -> {
+                        navController.navigateToFAQ()
+                    }
+                    SettingsItems.Help -> {
+                        navController.navigateToHelp()
+                    }
+                    else -> {}
                 }
             }
         )
+
+        faqRoute(
+            navigateBack = navController::popBackStack,
+        )
+
+        helpDestination(
+            onBackClick = navController::popBackStack,
+            navigateToFAQ = navController::navigateToFAQ,
+        )
+
+        themeDestination(navController::popBackStack)
     }
 }
 
@@ -44,7 +66,8 @@ fun NavGraphBuilder.settingsRoute(
 ) {
     composable<SettingsRoute> {
         SettingsScreen(
-
+            onNavigateBack = navigateBack,
+            navigateToScreen = navigateToScreen,
         )
     }
 }

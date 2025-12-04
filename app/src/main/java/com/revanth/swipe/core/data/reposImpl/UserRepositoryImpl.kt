@@ -21,4 +21,14 @@ class UserRepositoryImpl(
             userDao.updateFirstTimeUser(user.id, isFirstTime)
         }
     }
+
+    override suspend fun updateTheme(theme: String) {
+        val user = userDao.getUser().first()
+
+        if (user == null) {
+            userDao.insertUser(UserEntity(theme = theme))
+        } else {
+            userDao.updateTheme(user.id, theme)
+        }
+    }
 }

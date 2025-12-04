@@ -19,4 +19,7 @@ interface UserDao {
 
     @Query("UPDATE users SET firstTimeUser = :isFirstTime WHERE id = :id")
     suspend fun updateFirstTimeUser(id: Int, isFirstTime: Boolean)
+
+    @Query("UPDATE users SET theme = :theme WHERE id = :id")
+    suspend fun updateTheme(id: Int, theme: String)
 }

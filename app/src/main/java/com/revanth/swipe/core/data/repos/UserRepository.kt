@@ -6,4 +6,5 @@ import kotlinx.coroutines.flow.Flow
 interface UserRepository {
     fun getUser(): Flow<UserEntity?>
     suspend fun setFirstTimeUser(isFirstTime: Boolean)
+    suspend fun updateTheme(theme: String)
 }
