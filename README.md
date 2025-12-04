@@ -1,9 +1,9 @@
-### **🛒 Android Product Management App**
+# **🛒 Android Product Management App**
 Built using **Kotlin** and **Jetpack Compose**  
 Developed in **2 days**  
 Assignment provided by **Swipe@YC**
 
-## 🚀 How to Run This Project
+##  How to Run This Project
 
 1. **Clone the repository**
 https://github.com/revanthkumarJ/swipe-assignment
@@ -20,12 +20,7 @@ Android Studio will automatically prompt you to sync—click *Sync Now*.
 
 That's it! The app will install and launch automatically.
 
-
-# 🛒 Android Product Management App
-
-A modern Android application built as part of an assignment to demonstrate **product listing**, **product creation**, **offline support**, and **clean architecture** using the latest Android development practices.
-
-## 📌 What is this Project?
+##  What is this Project?
 
 This project is an Android application that includes:
 
