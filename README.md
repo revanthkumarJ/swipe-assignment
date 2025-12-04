@@ -24,6 +24,41 @@ It is built using **Jetpack Compose**, **Koin**, **Retrofit**, **Room**, **Corou
 - **Coil** – Image loading library  
 - Additional Android & Jetpack libraries as required
 
+## 📱 App Screenshots
+
+### 🔹 Onboarding Flow and Notifications Pop up
+
+| Onboarding 1 | Onboarding 2 | Notfication popup | Notfications |
+|----------|-----------|-----------|-----------|
+| <img width="200"  alt="image" src="https://github.com/user-attachments/assets/f572b8da-0ce9-40ed-b4f0-f3e96e616521" /> | <img width="200"  alt="image" src="https://github.com/user-attachments/assets/36aeb748-937b-40e6-a64e-18ebd487bac7" /> | <img width="200"  alt="image" src="https://github.com/user-attachments/assets/c4cb6565-5725-4acf-963c-f3c34ada253c" /> |  <img width="200"  alt="image" src="https://github.com/user-attachments/assets/585b6911-324f-4650-9564-9bbf5e896266" /> |
+
+### 🔹 Products List, Product Detail & Search
+
+| Product List | Product Details | Search Product |
+|----------|-----------|-----------|
+| <img width="200"  alt="image" src="https://github.com/user-attachments/assets/5406dfc4-c583-42af-8e0a-780ed580fe04" /> | <img width="200"  alt="image" src="https://github.com/user-attachments/assets/b56b8c7c-6e00-4f08-8049-ef2c081dc319" /> | <img width="200"  alt="image" src="https://github.com/user-attachments/assets/2fd41ded-ed6a-4f9c-a0b7-9424483ce6ba" /> |
+
+### 🔹 Sync States
+
+| Network Unavailable | Syncing | No Items to Sync |
+|----------------------|---------|-------------------|
+| <img width="200"  alt="image" src="https://github.com/user-attachments/assets/8c859140-ab71-443f-a842-58345e2ab62e" /> | <img width="200"  alt="image" src="https://github.com/user-attachments/assets/9804d400-a5e2-43c6-8ca3-a8a60441573e" /> | <img width="200"  alt="image" src="https://github.com/user-attachments/assets/72585b98-f641-4ece-ab4a-27376fd87c8c" /> |
+
+
+### 🔹 Add New Product & Upload States
+
+| Screen 1 | Screen 2 | Screen 3 | Screen 4 |
+|----------|-----------|-----------|-----------|
+| <img width="200"  alt="image" src="https://github.com/user-attachments/assets/4450db30-6d05-418d-bd4b-9c8fcb4f6a92" /> | <img width="200"  alt="image" src="https://github.com/user-attachments/assets/910af596-cdaf-498e-98b2-e09cd136087d" /> | <img width="200"  alt="image" src="https://github.com/user-attachments/assets/e7a52432-62c5-4aec-871d-50513ed0a35a" /> | <img width="200"  alt="image" src="https://github.com/user-attachments/assets/6d825ef8-07eb-4c69-9617-3cdfe9817f36" /> |
+
+
+### 🔹 Settings Flow
+
+| Settings Screen | Theme Screen | Help & Support | FAQ | About Us | App Info |
+|----------|-----------|-----------|-----------|-----------|-----------|
+| <img width="200"  alt="image" src="https://github.com/user-attachments/assets/2f7f8606-6f8a-4758-90fa-53e095162d1b" /> | <img width="200"  alt="image" src="https://github.com/user-attachments/assets/4a7b195d-00c1-4afc-aa16-4cf5aac559f5" /> | <img width="200"  alt="image" src="https://github.com/user-attachments/assets/fa1742a5-842b-45a5-a196-1e43b61f9906" /> | <img width="200"  alt="image" src="https://github.com/user-attachments/assets/6cb305c3-a5b6-404f-83a2-443da61c30ae" /> | <img width="200"  alt="image" src="https://github.com/user-attachments/assets/afce8277-372e-4df1-8988-ee6d2d2f433f" /> |<img width="200"  alt="image" src="https://github.com/user-attachments/assets/f420e6cc-095a-4bb5-8382-3c96ccfd840c" /> |
+
+
 
 ## 🏛 App Architecture
 
