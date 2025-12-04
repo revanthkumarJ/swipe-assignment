@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -33,12 +34,12 @@ import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import com.revanth.swipe.core.models.Product
-import com.revanth.swipe.core.ui.components.SwipeScaffold
 import kotlinx.coroutines.flow.collectLatest
 import org.koin.androidx.compose.koinViewModel
 import com.revanth.swipe.R
 import com.revanth.swipe.core.ui.components.SwipeLoader
 import com.revanth.swipe.core.ui.components.SwipeLottieAnimation
+import com.revanth.swipe.core.ui.components.SwipeScaffold
 import com.revanth.swipe.feature.home.components.AddProductBottomSheet
 import com.revanth.swipe.feature.home.components.EmptyContent
 import com.revanth.swipe.feature.home.components.ProductCard
@@ -49,6 +50,7 @@ import com.revanth.swipe.feature.home.components.SyncBottomSheet
 fun HomeScreen(
     viewModel: HomeViewModel = koinViewModel(),
     navigateToSettings:()->Unit,
+    navigateToDetailsScreen:(product:Product)-> Unit
 ) {
     val state by viewModel.state.collectAsState()
 
@@ -58,6 +60,7 @@ fun HomeScreen(
         viewModel.eventState.collectLatest { event ->
             when(event){
                 is HomeEvent.NavigateToSettings -> navigateToSettings()
+                is HomeEvent.NavigateToDetailsScreen -> navigateToDetailsScreen(event.product)
             }
         }
     }
@@ -162,7 +165,12 @@ fun HomeScreenContent(
                             if (home.filteredProducts.isEmpty()) {
                                 EmptyContent("No Products Found for the search query")
                             } else {
-                                ProductList(products = home.filteredProducts)
+                                ProductList(
+                                    onClick = {
+                                        onAction(HomeAction.OnProductClicked(it))
+                                    },
+                                    products = home.filteredProducts
+                                )
                             }
                         }
                     }
@@ -195,7 +203,10 @@ fun HomeScreenDialogs(
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun ProductList(products: List<Product>) {
+fun ProductList(
+    products: List<Product>,
+    onClick:(product:Product)-> Unit
+) {
     LazyVerticalGrid(
         columns = GridCells.Adaptive(minSize = 160.dp),
         contentPadding = PaddingValues(12.dp),
@@ -205,7 +216,10 @@ fun ProductList(products: List<Product>) {
     ) {
         items(products) { product ->
             ProductCard(
-                product = product
+                product = product,
+                modifier = Modifier.clickable{
+                    onClick(product)
+                }
             )
         }
     }

@@ -64,10 +64,12 @@ class HomeViewModel(
             }
 
             HomeAction.OnAddProductClicked -> {
-                _state.update { it.copy(
-                    showAddBottomSheet = true,
-                    addProductState = HomeUiState.AddProductState.Initial
-                ) }
+                _state.update {
+                    it.copy(
+                        showAddBottomSheet = true,
+                        addProductState = HomeUiState.AddProductState.Initial
+                    )
+                }
             }
 
             HomeAction.OnSyncClicked -> {
@@ -105,6 +107,7 @@ class HomeViewModel(
                     )
                 }
             }
+
             is HomeAction.OnProductTypeIndexChanged -> {
                 _state.update {
                     it.copy(
@@ -113,6 +116,7 @@ class HomeViewModel(
                     )
                 }
             }
+
             is HomeAction.OnTaxChanged -> {
                 _state.update {
                     it.copy(tax = action.tax)
@@ -139,6 +143,10 @@ class HomeViewModel(
                         selectedImage = action.uri,
                     )
                 }
+            }
+
+            is HomeAction.OnProductClicked -> {
+                sendEvent(HomeEvent.NavigateToDetailsScreen(action.product))
             }
         }
     }
@@ -182,13 +190,13 @@ class HomeViewModel(
         }
     }
 
-    private fun observeNetwork(){
+    private fun observeNetwork() {
         viewModelScope.launch {
-            networkStatus.isConnected.collect {connected->
+            networkStatus.isConnected.collect { connected ->
                 _state.update {
                     it.copy(networkAvailable = connected)
                 }
-                if(connected){
+                if (connected) {
                     syncProducts()
                 }
             }
@@ -220,18 +228,19 @@ class HomeViewModel(
             else -> null
         }
 
-        _state.update {it.copy(
-            productTypeError = productTypeError,
-            productNameError = productNameError,
-            priceError = priceError,
-            taxError = taxError
-        )}
+        _state.update {
+            it.copy(
+                productTypeError = productTypeError,
+                productNameError = productNameError,
+                priceError = priceError,
+                taxError = taxError
+            )
+        }
 
-        if(productTypeError==null && productNameError==null && priceError==null && taxError==null){
-            if(state.value.networkAvailable){
+        if (productTypeError == null && productNameError == null && priceError == null && taxError == null) {
+            if (state.value.networkAvailable) {
                 addProduct()
-            }
-            else{
+            } else {
                 viewModelScope.launch {
                     _state.update {
                         it.copy(addProductState = HomeUiState.AddProductState.NoInternet)
@@ -264,7 +273,7 @@ class HomeViewModel(
         }
     }
 
-    private fun addProduct(){
+    private fun addProduct() {
         viewModelScope.launch {
             val productType = state.value.productType
             val productName = state.value.productName
@@ -286,14 +295,14 @@ class HomeViewModel(
                     body = requestFile!!
                 )
             }
-            val res= repo.addProduct(
-                productName=productNameBody,
-                productType=productTypeBody,
-                price=priceBody,
-                tax=taxBody,
+            val res = repo.addProduct(
+                productName = productNameBody,
+                productType = productTypeBody,
+                price = priceBody,
+                tax = taxBody,
                 image = imagePart
             )
-            when(res){
+            when (res) {
 
                 is DataState.Error -> {
                     _state.update {
@@ -311,16 +320,17 @@ class HomeViewModel(
                     _state.update {
                         it.copy(addProductState = HomeUiState.AddProductState.Success)
                     }
-                    if(state.value.homeState is HomeUiState.HomeState.Success){
-                        val newlyAddedProduct= Product(
+                    if (state.value.homeState is HomeUiState.HomeState.Success) {
+                        val newlyAddedProduct = Product(
                             productName = productName,
                             productType = productType,
                             price = price.toDouble(),
                             tax = tax.toDouble(),
-                            image =""
+                            image = ""
                         )
-                        val existingProducts= (state.value.homeState as HomeUiState.HomeState.Success).allProducts
-                        val updatedProducts= mutableListOf(newlyAddedProduct)
+                        val existingProducts =
+                            (state.value.homeState as HomeUiState.HomeState.Success).allProducts
+                        val updatedProducts = mutableListOf(newlyAddedProduct)
                         updatedProducts.addAll(existingProducts)
                         _state.update {
                             it.copy(
@@ -453,8 +463,9 @@ class HomeViewModel(
 
 }
 
-sealed interface HomeEvent{
+sealed interface HomeEvent {
     data object NavigateToSettings : HomeEvent
+    data class NavigateToDetailsScreen(val product: Product) : HomeEvent
 }
 
 data class HomeUiState(
@@ -465,19 +476,19 @@ data class HomeUiState(
     val searchQuery: String = "",
     val showPullToRefreshLoader: Boolean = false,
     val showAddBottomSheet: Boolean = false,
-    val networkAvailable:Boolean = false,
-    val showSyncBottomSheet: Boolean=false,
+    val networkAvailable: Boolean = false,
+    val showSyncBottomSheet: Boolean = false,
 
 
     //Fields for Add Product
-    val productType :String="",
-    val productName:String="",
-    val price:String="",
-    val tax:String="",
-    val productTypeError:String?=null,
-    val productNameError:String?=null,
-    val priceError:String?=null,
-    val taxError:String?=null,
+    val productType: String = "",
+    val productName: String = "",
+    val price: String = "",
+    val tax: String = "",
+    val productTypeError: String? = null,
+    val productNameError: String? = null,
+    val priceError: String? = null,
+    val taxError: String? = null,
     val selectedImage: Uri? = null,
 ) {
     sealed interface DialogState {
@@ -496,15 +507,15 @@ data class HomeUiState(
     }
 
     sealed interface AddProductState {
-        data object Initial: AddProductState
+        data object Initial : AddProductState
         data object Loading : AddProductState
         data object Success : AddProductState
-        data object NoInternet: AddProductState
+        data object NoInternet : AddProductState
         data class Error(val message: String) : AddProductState
     }
 
-    val showAddProductSubmitButton:Boolean
-        get() = productNameError==null && priceError==null && taxError==null && productTypeError==null
+    val showAddProductSubmitButton: Boolean
+        get() = productNameError == null && priceError == null && taxError == null && productTypeError == null
 }
 
 sealed interface HomeAction {
@@ -525,17 +536,19 @@ sealed interface HomeAction {
 
     data class OnProductTypeIndexChanged(val productType: String) : HomeAction
 
-    data class OnProductNameChanged(val name:String) : HomeAction
+    data class OnProductNameChanged(val name: String) : HomeAction
 
-    data class OnPriceChanged(val price:String) : HomeAction
+    data class OnPriceChanged(val price: String) : HomeAction
 
-    data class OnTaxChanged(val tax:String) : HomeAction
+    data class OnTaxChanged(val tax: String) : HomeAction
 
-    data object OnAddProductSubmitClick: HomeAction
+    data object OnAddProductSubmitClick : HomeAction
 
-    data object AddProductTryAgain: HomeAction
+    data object AddProductTryAgain : HomeAction
 
     data object DismissSyncBottomSheet : HomeAction
 
     data class OnImageSelected(val uri: Uri?) : HomeAction
+
+    data class OnProductClicked(val product: Product) : HomeAction
 }

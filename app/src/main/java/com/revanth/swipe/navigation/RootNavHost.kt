@@ -11,7 +11,9 @@ import com.revanth.swipe.core.models.ThemeConfig
 import com.revanth.swipe.core.ui.theme.SwipeTheme
 import com.revanth.swipe.feature.home.HomeRoute
 import com.revanth.swipe.feature.home.homeDestination
+import com.revanth.swipe.feature.home.homeDetailsDestination
 import com.revanth.swipe.feature.home.navigateToHome
+import com.revanth.swipe.feature.home.navigateToHomeDetails
 import com.revanth.swipe.feature.onboarding.OnBoardingRoute
 import com.revanth.swipe.feature.onboarding.onBoardingDestination
 import com.revanth.swipe.feature.settings.settings.navigateToSettingsRoute
@@ -52,7 +54,12 @@ fun RootNavScreen(
             splashDestination()
 
             homeDestination(
-                navigateToSettings = navController::navigateToSettingsRoute
+                navigateToSettings = navController::navigateToSettingsRoute,
+                navigateToDetailsScreen = navController::navigateToHomeDetails
+            )
+
+            homeDetailsDestination(
+                navigateBack = navController::popBackStack
             )
 
             onBoardingDestination(
